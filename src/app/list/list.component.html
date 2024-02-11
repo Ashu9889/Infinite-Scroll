@@ -1,0 +1,54 @@
+<!-- <p>list works!</p> -->
+<!-- Interpolaltion -->
+<h1>{{ listName }}</h1>
+
+<!--Data Binding  -->
+<!-- <div [innerText]="totalElement"></div> -->
+
+<!-- Event Binding  -->
+<button (click)="scrollFun()">Toggle</button>
+
+<!-- <input type="text" [value]="listName" (change)="modify()" /> -->
+
+<!-- <div *ngIf="record[0].age > 20">Record Available :</div> -->
+<div class="table-div" id="tb" (scroll)="scrollFun()">
+  <table>
+    <tr>
+      <th (click)="listsort('id', 'isIdAsc')">
+        ID<span *ngIf="sortObj.isIdAsc">⬆️</span
+        ><span *ngIf="!sortObj.isIdAsc">⬇️</span>
+      </th>
+      <th (click)="listsort('firstName', 'isNameAsc')">
+        Name <span *ngIf="sortObj.isNameAsc">⬆️</span
+        ><span *ngIf="!sortObj.isNameAsc">⬇️</span>
+      </th>
+      <th (click)="listsort('email', 'isEmailAsc')">
+        Email<span *ngIf="sortObj.isEmailAsc">⬆️</span
+        ><span *ngIf="!sortObj.isEmailAsc">⬇️</span>
+      </th>
+      <th (click)="listsort('email', 'isUsernameAsc')">
+        UserName<span *ngIf="sortObj.isUsernameAsc">⬆️</span
+        ><span *ngIf="!sortObj.isUsernameAsc">⬇️</span>
+      </th>
+      <th>Gender</th>
+    </tr>
+    <tr *ngFor="let item of record">
+      <td>
+        {{ item.id }}
+      </td>
+      <td>
+        {{ item.firstName + " " + item.lastName }}
+      </td>
+      <td>
+        {{ item.email }}
+      </td>
+      <td>
+        {{ item.username }}
+      </td>
+      <td>
+        {{ item.gender }}
+      </td>
+    </tr>
+  </table>
+</div>
+<h2>{{ record.length }}/100</h2>
