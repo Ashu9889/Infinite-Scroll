@@ -6,7 +6,7 @@
 }
 table{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 table, th, td {
   border:1px solid black;
@@ -16,9 +16,19 @@ th{
   position: sticky;
   top: 0px;  /* 0px if you don't have a navbar, but something is required */
   background: white;
-  text-align:center;
+  text-align:center ;
 }
 
 th{
     cursor: pointer;
 }
+
+.inputForm mat-form-field{
+  margin: 10px;
+}
+
+.search mat-form-field{
+  margin: 10px;
+}
+
+button{ margin: 10px;}

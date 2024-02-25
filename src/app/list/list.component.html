@@ -1,54 +1,157 @@
-<!-- <p>list works!</p> -->
-<!-- Interpolaltion -->
-<h1>{{ listName }}</h1>
+<div class="search">
+  <mat-form-field class="serach-filter">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchData.value" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Filter Condition</mat-label>
+    <select matNativeControl required [(ngModel)]="searchData.filter">
+      <option value="id">ID</option>
+      <option value="firstName">Name</option>
+      <option value="email">Email</option>
+      <option value="username">Username</option>
+    </select>
+  </mat-form-field>
+  <button mat-flat-button color="warn" (click)="onSearch()">Search</button>
+  <button mat-flat-button color="warn" (click)="clearFilter()">
+    Clear Filter
+  </button>
 
-<!--Data Binding  -->
-<!-- <div [innerText]="totalElement"></div> -->
+  <input type="file" (change)="onFileChange($event)" />
+</div>
+<hr />
+<div class="inputForm">
+  <form method="post" #myForm="ngForm" (ngSubmit)="formSubmit(myForm)">
+    <mat-form-field class="example-full-width">
+      <mat-label>ID</mat-label>
+      <input
+        matInput
+        placeholder="Enter Your ID"
+        value="101"
+        [(ngModel)]="inputData.id"
+        readonly
+        name="ID"
+      />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Enter Your Name"
+        required
+        ngModel
+        name="name"
+      />
+      <mat-error>Name is Required</mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        placeholder="Enter Your Email"
+        required
+        type="email"
+        ngModel
+        name="email"
+      />
+      <mat-error>Email is Required</mat-error>
+    </mat-form-field>
 
-<!-- Event Binding  -->
-<button (click)="scrollFun()">Toggle</button>
+    <mat-form-field class="example-full-width">
+      <mat-label>UserName</mat-label>
+      <input
+        matInput
+        placeholder="Enter Your UserName"
+        required
+        ngModel
+        name="username"
+      />
+      <mat-error>UserName is Required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Gender</mat-label>
+      <select matNativeControl required ngModel name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <mat-error>Gender is Required</mat-error>
+    </mat-form-field>
+    <button mat-flat-button color="primary">Add</button>
+  </form>
+</div>
 
-<!-- <input type="text" [value]="listName" (change)="modify()" /> -->
-
-<!-- <div *ngIf="record[0].age > 20">Record Available :</div> -->
 <div class="table-div" id="tb" (scroll)="scrollFun()">
-  <table>
-    <tr>
-      <th (click)="listsort('id', 'isIdAsc')">
-        ID<span *ngIf="sortObj.isIdAsc">⬆️</span
+  <table mat-table [dataSource]="datasource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef (click)="listsort('id', 'isIdAsc')">
+        ID <span *ngIf="sortObj.isIdAsc">⬆️</span
         ><span *ngIf="!sortObj.isIdAsc">⬇️</span>
       </th>
-      <th (click)="listsort('firstName', 'isNameAsc')">
-        Name <span *ngIf="sortObj.isNameAsc">⬆️</span
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="firstName">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        (click)="listsort('firstName', 'isNameAsc')"
+      >
+        Name<span *ngIf="sortObj.isNameAsc">⬆️</span
         ><span *ngIf="!sortObj.isNameAsc">⬇️</span>
       </th>
-      <th (click)="listsort('email', 'isEmailAsc')">
+      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        (click)="listsort('email', 'isEmailAsc')"
+      >
         Email<span *ngIf="sortObj.isEmailAsc">⬆️</span
         ><span *ngIf="!sortObj.isEmailAsc">⬇️</span>
       </th>
-      <th (click)="listsort('email', 'isUsernameAsc')">
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+    <ng-container matColumnDef="username">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        (click)="listsort('username', 'isUsernameAsc')"
+      >
         UserName<span *ngIf="sortObj.isUsernameAsc">⬆️</span
         ><span *ngIf="!sortObj.isUsernameAsc">⬇️</span>
       </th>
-      <th>Gender</th>
-    </tr>
-    <tr *ngFor="let item of record">
-      <td>
-        {{ item.id }}
+      <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+    </ng-container>
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef>Gender</th>
+      <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="checkbox">
+      <th mat-header-cell *matHeaderCellDef>
+        <input
+          type="checkbox"
+          name=""
+          id="checkAll"
+          (change)="selectAll($event.target)"
+        />
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.checkbox
+        }}<input
+          type="checkbox"
+          name=""
+          id=""
+          (change)="selectRecord(element, $event)"
+          [checked]="isChecked"
+        />
       </td>
-      <td>
-        {{ item.firstName + " " + item.lastName }}
-      </td>
-      <td>
-        {{ item.email }}
-      </td>
-      <td>
-        {{ item.username }}
-      </td>
-      <td>
-        {{ item.gender }}
-      </td>
-    </tr>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
-<h2>{{ record.length }}/100</h2>
+<button mat-flat-button color="warn" (click)="exportDataToExcel()">
+  export
+</button>
+<button mat-flat-button color="warn" (click)="deleteRecord()">Delete</button>
